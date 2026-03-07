@@ -29,6 +29,11 @@ class DisputeTool(private val disputeService: DisputeService) {
     fun getDisputeStatus(
         @ToolParam(description = "The dispute identifier") disputeId: String,
     ) = disputeService.getDisputeStatus(disputeId)
+
+    @Tool(description = "List all dispute ids for an account")
+    fun listDisputes(
+        @ToolParam(description = "The account identifier") accountId: String,
+    ) = disputeService.listDisputes(accountId)
 }
 
 data class Dispute(
@@ -51,6 +56,11 @@ class DisputeService {
         val dispute = Dispute(disputeId, accountId, transactionId, reason, "OPEN")
         disputes[disputeId] = dispute
         return dispute
+    }
+
+    fun listDisputes(accountId: String): List<String> {
+        logger.info("Listing disputes for account $accountId")
+        return disputes.values.filter { it.accountId == accountId }.map { it.id }
     }
 
     fun getDisputeStatus(disputeId: String): Dispute? {
