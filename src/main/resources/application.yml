@@ -1,22 +1,13 @@
 spring:
   profiles:
-    active: "ollama"
+    active: "bedrock"
   application:
-    name: banking-sentinel
+    name: "banking-sentinel"
   datasource:
     url: "jdbc:postgresql://localhost:5432/postgres"
     username: "postgres"
     password: "password"
     driver-class-name: org.postgresql.Driver
-  ai:
-    mcp:
-      client:
-        toolcallback:
-          enabled: true
-        sse:
-          connections:
-            booking-tool:
-              url: "http://localhost:8081"
 
 server:
   port: 8080

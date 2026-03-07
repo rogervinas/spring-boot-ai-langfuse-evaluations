@@ -39,4 +39,6 @@ out/
 ### Kotlin ###
 .kotlin
 
+### Custom
 .ollama
+system.properties

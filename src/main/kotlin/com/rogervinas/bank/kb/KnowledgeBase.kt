@@ -1,4 +1,4 @@
-package com.rogervinas.bank
+package com.rogervinas.bank.kb
 
 import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory

@@ -1,6 +1,12 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+import java.util.Properties
+
 plugins {
-    kotlin("jvm") version "2.2.21"
-    kotlin("plugin.spring") version "2.2.21"
+    val kotlinVersion = "2.3.10"
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.spring") version kotlinVersion
     id("org.springframework.boot") version "4.0.3"
     id("io.spring.dependency-management") version "1.1.7"
 }
@@ -18,7 +24,7 @@ repositories {
     mavenCentral()
 }
 
-extra["springAiVersion"] = "2.0.0-M2"
+val springAiVersion = "2.0.0-M2"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -31,11 +37,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-jackson2")
 
     // ollama
-    implementation("org.springframework.ai:spring-ai-starter-model-ollama")
+    // implementation("org.springframework.ai:spring-ai-starter-model-ollama")
 
     // bedrock
-    // implementation("org.springframework.ai:spring-ai-starter-model-bedrock")
-    // implementation("org.springframework.ai:spring-ai-starter-model-bedrock-converse")
+    implementation("org.springframework.ai:spring-ai-starter-model-bedrock")
+    implementation("org.springframework.ai:spring-ai-starter-model-bedrock-converse")
 
     implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector")
     runtimeOnly("org.postgresql:postgresql")
@@ -62,16 +68,37 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}")
+        mavenBom("org.springframework.ai:spring-ai-bom:$springAiVersion")
     }
 }
 
 kotlin {
     compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+        freeCompilerArgs.addAll("-Xjsr305=strict")
     }
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    testLogging {
+        events(PASSED, SKIPPED, FAILED)
+    }
+    setSystemProperties { systemProperty(it.first, it.second) }
+}
+
+tasks.withType<JavaExec> {
+    setSystemProperties { systemProperty(it.first, it.second) }
+}
+
+private fun setSystemProperties(setSystemProperty: (Pair<String, Any>) -> Unit) {
+    val systemPropertiesFile = project.rootProject.file("system.properties")
+    if (systemPropertiesFile.exists()) {
+        systemPropertiesFile.inputStream().use { inputStream ->
+            Properties().apply {
+                load(inputStream)
+            }.forEach {
+                setSystemProperty(it.key.toString() to it.value)
+            }
+        }
+    }
 }
