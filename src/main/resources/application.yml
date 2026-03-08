@@ -8,10 +8,40 @@ spring:
     username: "postgres"
     password: "password"
     driver-class-name: org.postgresql.Driver
+  ai:
+    chat:
+      observations:
+        log-prompt: false
+        log-completion: false
 
 server:
   port: 8080
 
 logging:
   level:
-    org.springframework.ai.chat.client.advisor: INFO
+    org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor: DEBUG
+
+management:
+  logging:
+    export:
+      enabled: false
+  tracing:
+    sampling:
+      probability: 1.0
+    export:
+      enabled: true
+  observations:
+    annotations:
+      enabled: true
+  otlp:
+    metrics:
+      export:
+        enabled: false
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:3000/api/public/otel/v1/traces
+    resource-attributes:
+      service.name: "${spring.application.name}"
+      service.version: 1.0.0

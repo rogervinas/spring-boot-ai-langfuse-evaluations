@@ -1,6 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+import org.gradle.kotlin.dsl.implementation
 import java.util.Properties
 
 plugins {
@@ -25,12 +26,14 @@ repositories {
 }
 
 val springAiVersion = "2.0.0-M2"
+val otelInstrumentationVersion = "2.24.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-restclient")
     implementation("org.springframework.boot:spring-boot-starter-webclient")
     implementation("org.springframework.boot:spring-boot-starter-jackson")
+    implementation("org.springframework.boot:spring-boot-starter-aspectj")
     implementation("org.springframework.ai:spring-ai-advisors-vector-store")
 
     // TODO remove when spring-ai is updated to use Jackson 3
@@ -43,8 +46,13 @@ dependencies {
     implementation("org.springframework.ai:spring-ai-starter-model-bedrock")
     implementation("org.springframework.ai:spring-ai-starter-model-bedrock-converse")
 
+    // vector store
     implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector")
     runtimeOnly("org.postgresql:postgresql")
+
+    // open telemetry
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
 
@@ -69,6 +77,7 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom("org.springframework.ai:spring-ai-bom:$springAiVersion")
+        mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:$otelInstrumentationVersion")
     }
 }
 

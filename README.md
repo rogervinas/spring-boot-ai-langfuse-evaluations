@@ -6,25 +6,16 @@ This repository demonstrates a production-grade AI Agent built with **Spring AI*
 using **MCP** (Model Context Protocol) for core banking actions and **Langfuse** for evaluating RAG faithfulness and tool-call accuracy.
 
 
-```shell
-curl -X POST "http://localhost:8080/2/chat" \
--H "Content-Type: application/x-www-form-urlencoded" \
--d "userTier=Metal&accountId=ACC-1001&question=Can I dispute this €50 charge from 20 days ago?"
+Langfuse docker compose in https://github.com/langfuse/langfuse/blob/main/docker-compose.yml
+
+docker compose -f docker-compose-langfuse.yml up -d
 
 
-curl -X POST "http://localhost:8080/2/chat" \
--H "Content-Type: application/x-www-form-urlencoded" \
--d "userTier=Metal&accountId=ACC-1001&question=I think I have a fraudulent charge"
+LANGFUSE_SECRET_KEY="sk-lf-b3441325-b3e9-4d2e-8451-eac50ebe1a4d"
+LANGFUSE_PUBLIC_KEY="pk-lf-b82aec5c-74bf-4169-b89a-4cb5708310fc"
 
-curl -X POST "http://localhost:8080/2/chat" \
--H "Content-Type: application/x-www-form-urlencoded" \
--d "userTier=Metal&accountId=ACC-1001&question=please help me"
+export MANAGEMENT_OPENTELEMETRY_TRACING_EXPORT_OTLP_HEADERS_AUTHORIZATION="Basic $(echo -n "$LANGFUSE_PUBLIC_KEY:$LANGFUSE_SECRET_KEY" | base64)"
 
-curl -X POST "http://localhost:8080/2/chat" \
--H "Content-Type: application/x-www-form-urlencoded" \
--d "userTier=Metal&accountId=ACC-1001&question=I do not have netflix"
 
-curl -X POST "http://localhost:8080/2/chat" \
--H "Content-Type: application/x-www-form-urlencoded" \
--d "userTier=Metal&accountId=ACC-1001&question=yes"
-```
+
+https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-metrics/

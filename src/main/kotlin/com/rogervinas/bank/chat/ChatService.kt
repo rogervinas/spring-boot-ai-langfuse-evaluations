@@ -50,9 +50,6 @@ class ChatService(
             .user(question)
             .advisors(questionAnswerAdvisor, chatMemoryAdvisor, simpleLoggerAdvisor)
             .call()
-            .content().apply {
-                logger.info("Chat #$chatId question: $question")
-                logger.info("Chat #$chatId answer: $this")
-            }!!
+            .content()!!
     }
 }
