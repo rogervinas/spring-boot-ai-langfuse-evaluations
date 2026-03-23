@@ -12,7 +12,7 @@
 
 - **Spring Boot** + **Spring AI**
 - **LLM Providers**: AWS Bedrock, Google Gemini, or local Ollama
-- **PGVector** as the vector store for RAG
+- **PGVector** as the vector database for RAG
 - **Langfuse** for tracing and evaluation via OpenTelemetry
 
 ## Configuration
@@ -33,9 +33,9 @@ AWS_BEDROCK_EMBEDDING_MODEL=...
 GOOGLE_API_KEY=...
 ```
 
-## Running the local database
+## Running the local vector database
 
-Start PGVector for the RAG vector store:
+Start PGVector for the RAG vector database:
 
 ```bash
 docker compose -f docker-compose-vectordb.yml up -d
@@ -49,7 +49,7 @@ To stop it:
 docker compose -f docker-compose-vectordb.yml down
 ```
 
-To stop it and remove all volumes (removes all vector store data):
+To stop it and remove all volumes (removes all vector database data):
 
 ```bash
 docker compose -f docker-compose-vectordb.yml down -v
@@ -112,7 +112,7 @@ You can run the application using one of the following profiles:
 
 ### 1. Ollama Profile (Local)
 
-Requires [Ollama](#running-ollama-locally) and [Postgres](#running-the-local-database) to be running.
+Requires [Ollama](#running-ollama-locally) and [Vector database](#running-the-local-vector-database) to be running.
 
 ```bash
 SPRING_PROFILES_ACTIVE=ollama ./gradlew bootRun
@@ -120,7 +120,7 @@ SPRING_PROFILES_ACTIVE=ollama ./gradlew bootRun
 
 ### 2. AWS Bedrock Profile
 
-Requires [Postgres](#running-the-local-database) to be running. You need to configure AWS credentials and models via environment variables or `system.properties`:
+Requires [Vector database](#running-the-local-vector-database) to be running. You need to configure AWS credentials and models via environment variables or `system.properties`:
 
 ```bash
 # Set environment variables or use system.properties
@@ -129,7 +129,7 @@ SPRING_PROFILES_ACTIVE=bedrock ./gradlew bootRun
 
 ### 3. Google Gemini Profile
 
-Requires [Postgres](#running-the-local-database) to be running. You need to configure your Google AI API key via environment variables or `system.properties`:
+Requires [Vector database](#running-the-local-vector-database) to be running. You need to configure your Google AI API key via environment variables or `system.properties`:
 
 ```bash
 # Set environment variables or use system.properties
