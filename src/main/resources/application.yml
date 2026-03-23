@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: "banking-sentinel"
+  ai:
+    model:
+      chat: none
+      embedding: none
+    chat:
+      observations:
+        log-prompt: false
+        log-completion: false
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: "postgres"
+    password: "password"
+    driver-class-name: org.postgresql.Driver
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor: DEBUG
+
+management:
+  logging:
+    export:
+      enabled: false
+  tracing:
+    sampling:
+      probability: 1.0
+    export:
+      enabled: true
+  observations:
+    annotations:
+      enabled: true
+  otlp:
+    metrics:
+      export:
+        enabled: false
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:3000/api/public/otel/v1/traces
+          headers:
+            Authorization: "Basic cHVibGlja2V5LWxvY2FsOnNlY3JldGtleS1sb2NhbA=="
+    resource-attributes:
+      service.name: "${spring.application.name}"
+      service.version: 1.0.0
