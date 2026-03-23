@@ -1,3 +1,9 @@
+![Java](https://img.shields.io/badge/Java-21-blue?labelColor=black)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.x-blue?labelColor=black)
+![SpringBoot](https://img.shields.io/badge/SpringBoot-4.x-blue?labelColor=black)
+![SpringAI](https://img.shields.io/badge/SpringAI-2.x-blue?labelColor=black)
+![Langfuse](https://img.shields.io/badge/Langfuse-3.x-blue?labelColor=black)
+
 # Spring AI Langfuse Evaluations
 
 > **A multi-model RAG and Tool-Calling assistant for modern fintech, built with Spring AI and evaluated with Langfuse for observability, RAG faithfulness, and tool-call accuracy.**
