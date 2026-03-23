@@ -8,16 +8,34 @@ using tool calling for core banking actions and **Langfuse** for observability a
 ## Stack
 
 - **Spring Boot 4.x** + **Spring AI 2.0.0-M2**
-- **AWS Bedrock** (Converse API) as the LLM provider
+- **LLM Providers**: AWS Bedrock (Converse API), Google Gemini, or local Ollama
 - **PGVector** as the vector store for RAG
-- **Langfuse** for tracing and evaluation via OpenTelemetry (OTLP)
+- **Langfuse** for tracing and evaluation via OpenTelemetry
 
-## Running the vector store
+## Configuration
+
+You can configure the application using environment variables or a `system.properties` file in the root directory. This file is ignored by Git and is loaded by both `./gradlew bootRun` and tests.
+
+Example `system.properties`:
+
+```properties
+# AWS Bedrock
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+AWS_REGION=eu-central-1
+AWS_BEDROCK_CHAT_MODEL=...
+AWS_BEDROCK_EMBEDDING_MODEL=...
+
+# Google Gemini
+GOOGLE_API_KEY=...
+```
+
+## Running the local database
 
 Start PGVector for the RAG vector store:
 
 ```bash
-docker compose up -d
+docker compose -f docker-compose-postgres.yml up -d
 ```
 
 This starts a PostgreSQL instance with the `pgvector` extension on port `5432`.
@@ -25,8 +43,31 @@ This starts a PostgreSQL instance with the `pgvector` extension on port `5432`.
 To stop it:
 
 ```bash
-docker compose down
+docker compose -f docker-compose-postgres.yml down
 ```
+
+To stop it and remove all volumes (removes all vector store data):
+
+```bash
+docker compose -f docker-compose-postgres.yml down -v
+```
+
+## Running Ollama locally
+
+If you want to use local LLMs, you can run Ollama either via Docker Compose or as a native application (more info at [ollama.com](https://ollama.com/)).
+
+### Using Docker Compose
+
+```bash
+docker compose -f docker-compose-ollama.yml up -d
+```
+
+To stop it:
+
+```bash
+docker compose -f docker-compose-ollama.yml down
+```
+
 
 ## Running Langfuse locally
 
@@ -64,21 +105,34 @@ docker compose -f docker-compose-langfuse.yml down -v
 
 The `application.yml` is pre-configured to send traces to the local Langfuse instance using the auto-provisioned API keys.
 
-You need to configure AWS Bedrock credentials and models via environment variables or `system.properties`:
+You can run the application using one of the following profiles:
 
-```
-AWS_ACCESS_KEY_ID=...
-AWS_SECRET_ACCESS_KEY=...
-AWS_REGION=eu-central-1
-AWS_BEDROCK_CHAT_MODEL=...
-AWS_BEDROCK_EMBEDDING_MODEL=...
-```
+### 1. Ollama Profile (Local)
 
-Then run:
+Requires [Ollama](#running-ollama-locally) and [Postgres](#running-the-local-database) to be running.
 
 ```bash
-./gradlew bootRun
+SPRING_PROFILES_ACTIVE=ollama ./gradlew bootRun
 ```
+
+### 2. AWS Bedrock Profile
+
+Requires [Postgres](#running-the-local-database) to be running. You need to configure AWS credentials and models via environment variables or `system.properties`:
+
+```bash
+# Set environment variables or use system.properties
+SPRING_PROFILES_ACTIVE=bedrock ./gradlew bootRun
+```
+
+### 3. Google Gemini Profile
+
+Requires [Postgres](#running-the-local-database) to be running. You need to configure your Google AI API key via environment variables or `system.properties`:
+
+```bash
+# Set environment variables or use system.properties
+SPRING_PROFILES_ACTIVE=gemini ./gradlew bootRun
+```
+
 
 ## Spring AI + Spring Boot 4.x observability workarounds
 

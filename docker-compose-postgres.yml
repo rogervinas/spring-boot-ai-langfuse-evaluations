@@ -1,5 +1,4 @@
 services:
-
   vectordb:
     image: pgvector/pgvector:pg16
     environment:
@@ -7,12 +6,9 @@ services:
       - POSTGRES_PASSWORD=password
     ports:
       - "5432:5432"
-
-  ollama:
-    image: ollama/ollama:0.17.4
-    profiles:
-      - disabled # ollama disabled in this branch
     volumes:
-      - ./.ollama:/root/.ollama
-    ports:
-      - "11434:11434"
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+    driver: local

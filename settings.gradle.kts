@@ -1,1 +1,1 @@
-rootProject.name = "spring-boot-ai-banking-sentinel"
+rootProject.name = "spring-boot-ai-langfuse-evaluations"

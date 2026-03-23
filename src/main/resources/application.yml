@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: "bedrock"
   application:
     name: "banking-sentinel"
   datasource:
