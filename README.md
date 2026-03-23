@@ -10,7 +10,7 @@
 
 ## Stack
 
-- **Spring Boot 4.x** + **Spring AI 2.0.0-M2**
+- **Spring Boot** + **Spring AI**
 - **LLM Providers**: AWS Bedrock, Google Gemini, or local Ollama
 - **PGVector** as the vector store for RAG
 - **Langfuse** for tracing and evaluation via OpenTelemetry
