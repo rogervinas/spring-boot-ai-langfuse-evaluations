@@ -18,5 +18,6 @@ spring:
           model: "${AWS_BEDROCK_EMBEDDING_MODEL}"
     vectorstore:
       pgvector:
+        table-name: "vector_store_bedrock"
         dimensions: 1024
         initialize-schema: true

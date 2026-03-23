@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.ai.document.Document
 import org.springframework.ai.vectorstore.VectorStore
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 
@@ -11,13 +12,15 @@ import org.springframework.stereotype.Service
 class KnowledgeBase(
     private val vectorStore: VectorStore,
     private val jdbcTemplate: JdbcTemplate,
+    @Value("\${spring.ai.vectorstore.pgvector.table-name:vector_store}")
+    private val tableName: String,
 ) {
 
     @PostConstruct
     fun init() {
         val logger = LoggerFactory.getLogger(KnowledgeBase::class.java)
         val vectorStoreCount = vectorStoreCount(jdbcTemplate)
-        if (vectorStoreCount == 0) {
+        if (vectorStoreCount == null || vectorStoreCount == 0) {
             logger.info("Initializing KnowledgeBase ...")
             val documents = listOf(
                 Document(
@@ -61,5 +64,5 @@ class KnowledgeBase(
     }
 
     private fun vectorStoreCount(jdbcTemplate: JdbcTemplate) =
-        jdbcTemplate.queryForObject("SELECT COUNT(*) FROM vector_store", Int::class.java)
+        jdbcTemplate.queryForObject("SELECT COUNT(*) FROM $tableName", Int::class.java)
 }

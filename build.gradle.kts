@@ -41,15 +41,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-jackson2")
 
     // ollama
-    //implementation("org.springframework.ai:spring-ai-starter-model-ollama")
+    implementation("org.springframework.ai:spring-ai-starter-model-ollama")
 
-    // google genai
+    // gemini
     implementation("org.springframework.ai:spring-ai-starter-model-google-genai")
     implementation("org.springframework.ai:spring-ai-starter-model-google-genai-embedding")
 
     // bedrock
-    //implementation("org.springframework.ai:spring-ai-starter-model-bedrock")
-    //implementation("org.springframework.ai:spring-ai-starter-model-bedrock-converse")
+    implementation("org.springframework.ai:spring-ai-starter-model-bedrock")
+    implementation("org.springframework.ai:spring-ai-starter-model-bedrock-converse")
 
     // vector store
     implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector")
@@ -88,7 +88,7 @@ dependencyManagement {
 
 kotlin {
     compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
+        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
     }
 }
 

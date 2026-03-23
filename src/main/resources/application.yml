@@ -1,16 +1,19 @@
 spring:
   application:
     name: "banking-sentinel"
+  ai:
+    model:
+      chat: none
+      embedding: none
+    chat:
+      observations:
+        log-prompt: false
+        log-completion: false
   datasource:
     url: "jdbc:postgresql://localhost:5432/postgres"
     username: "postgres"
     password: "password"
     driver-class-name: org.postgresql.Driver
-  ai:
-    chat:
-      observations:
-        log-prompt: false
-        log-completion: false
 
 server:
   port: 8080

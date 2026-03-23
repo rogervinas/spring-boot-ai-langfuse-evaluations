@@ -1,14 +1,11 @@
-# Spring AI Banking Sentinel
+# Spring AI Langfuse Evaluations
 
-> **An Evaluated RAG + MCP Assistant for Modern Fintech**
-
-This repository demonstrates a production-grade AI Agent built with **Spring AI**,
-using tool calling for core banking actions and **Langfuse** for observability and evaluation of RAG faithfulness and tool-call accuracy.
+> **A multi-model RAG and Tool-Calling assistant for modern fintech, built with Spring AI and evaluated with Langfuse for observability, RAG faithfulness, and tool-call accuracy.**
 
 ## Stack
 
 - **Spring Boot 4.x** + **Spring AI 2.0.0-M2**
-- **LLM Providers**: AWS Bedrock (Converse API), Google Gemini, or local Ollama
+- **LLM Providers**: AWS Bedrock, Google Gemini, or local Ollama
 - **PGVector** as the vector store for RAG
 - **Langfuse** for tracing and evaluation via OpenTelemetry
 
@@ -35,7 +32,7 @@ GOOGLE_API_KEY=...
 Start PGVector for the RAG vector store:
 
 ```bash
-docker compose -f docker-compose-postgres.yml up -d
+docker compose -f docker-compose-vectordb.yml up -d
 ```
 
 This starts a PostgreSQL instance with the `pgvector` extension on port `5432`.
@@ -43,13 +40,13 @@ This starts a PostgreSQL instance with the `pgvector` extension on port `5432`.
 To stop it:
 
 ```bash
-docker compose -f docker-compose-postgres.yml down
+docker compose -f docker-compose-vectordb.yml down
 ```
 
 To stop it and remove all volumes (removes all vector store data):
 
 ```bash
-docker compose -f docker-compose-postgres.yml down -v
+docker compose -f docker-compose-vectordb.yml down -v
 ```
 
 ## Running Ollama locally

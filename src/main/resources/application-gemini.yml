@@ -1,5 +1,8 @@
 spring:
   ai:
+    model:
+      chat: "google-genai"
+      embedding: "google-genai"
     google:
       genai:
         api-key: "${GOOGLE_API_KEY}"
@@ -17,5 +20,6 @@ spring:
               dimensions: 768
     vectorstore:
       pgvector:
+        table-name: "vector_store_gemini"
         dimensions: 768
         initialize-schema: true
