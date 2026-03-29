@@ -4,6 +4,10 @@
 ![SpringAI](https://img.shields.io/badge/SpringAI-2.x-blue?labelColor=black)
 ![Langfuse](https://img.shields.io/badge/Langfuse-3.x-blue?labelColor=black)
 
+![Gemini](https://img.shields.io/badge/Gemini-✓-4285F4?labelColor=black)
+![Bedrock](https://img.shields.io/badge/Bedrock-✓-FF9900?labelColor=black)
+![Ollama](https://img.shields.io/badge/Ollama-✓-FFFFFF?labelColor=black)
+
 # Spring AI Langfuse Evaluations
 
 > **A multi-model RAG and Tool-Calling assistant for modern fintech, built with Spring AI and evaluated with Langfuse for observability, RAG faithfulness, and tool-call accuracy.**
