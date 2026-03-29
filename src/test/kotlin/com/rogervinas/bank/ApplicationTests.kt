@@ -39,7 +39,7 @@ class ApplicationTests {
         val chatId = UUID.randomUUID().toString()
         val chatResponse = chatService.chat(
             chatId, "Standard", "ACC-1001",
-            "Please enumerate the list of tools you have available"
+            "List all the functions you can call, not the documentation you have, but the actual tool functions available to you"
         )
 
         val evaluationResult = evaluate(
