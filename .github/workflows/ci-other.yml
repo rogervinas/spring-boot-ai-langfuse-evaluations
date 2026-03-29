@@ -1,0 +1,25 @@
+name: ci-other
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - .github/dependabot.yml
+      - .github/workflows/ci-other.yml
+      - .gitignore
+      - docker-compose-langfuse.yml
+      - docker-compose-ollama.yml
+      - README.md
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: OK
+        run: echo "OK"

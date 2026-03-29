@@ -1,8 +1,13 @@
+[![CI](https://github.com/rogervinas/spring-boot-ai-langfuse-evaluations/actions/workflows/ci.yml/badge.svg)](https://github.com/rogervinas/spring-boot-ai-langfuse-evaluations/actions/workflows/ci.yml)
 ![Java](https://img.shields.io/badge/Java-21-blue?labelColor=black)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.x-blue?labelColor=black)
 ![SpringBoot](https://img.shields.io/badge/SpringBoot-4.x-blue?labelColor=black)
 ![SpringAI](https://img.shields.io/badge/SpringAI-2.x-blue?labelColor=black)
 ![Langfuse](https://img.shields.io/badge/Langfuse-3.x-blue?labelColor=black)
+
+![Gemini](https://img.shields.io/badge/Gemini-✓-4285F4?labelColor=black)
+![Bedrock](https://img.shields.io/badge/Bedrock-✓-FF9900?labelColor=black)
+![Ollama](https://img.shields.io/badge/Ollama-✓-FFFFFF?labelColor=black)
 
 # Spring AI Langfuse Evaluations
 

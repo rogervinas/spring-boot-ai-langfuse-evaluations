@@ -2,7 +2,8 @@ spring:
   ai:
     model:
       chat: "google-genai"
-      embedding: "google-genai"
+      embedding:
+        text: "google-genai"
     google:
       genai:
         api-key: "${GOOGLE_API_KEY}"

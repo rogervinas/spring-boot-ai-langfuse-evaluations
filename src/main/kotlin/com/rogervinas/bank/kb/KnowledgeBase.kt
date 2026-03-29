@@ -6,6 +6,7 @@ import org.springframework.ai.document.Document
 import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.queryForObject
 import org.springframework.stereotype.Service
 
 @Service
@@ -64,5 +65,5 @@ class KnowledgeBase(
     }
 
     private fun vectorStoreCount(jdbcTemplate: JdbcTemplate) =
-        jdbcTemplate.queryForObject("SELECT COUNT(*) FROM $tableName", Int::class.java)
+        jdbcTemplate.queryForObject<Int>("SELECT COUNT(*) FROM $tableName")
 }

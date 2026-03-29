@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  # Only on PRs, not on push to main — avoid Gemini API quota usage since tests already ran on the PR branch
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - .github/dependabot.yml
+      - .github/workflows/ci-other.yml
+      - .gitignore
+      - docker-compose-langfuse.yml
+      - docker-compose-ollama.yml
+      - README.md
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: temurin
+          cache: gradle
+          cache-dependency-path: build.gradle.kts
+
+      - name: Build
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: ./gradlew build --no-daemon --info
