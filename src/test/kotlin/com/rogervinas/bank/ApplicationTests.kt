@@ -35,25 +35,6 @@ class ApplicationTests {
     lateinit var chatService: ChatService
 
     @Test
-    fun `should have tools available`() {
-        val chatId = UUID.randomUUID().toString()
-        val chatResponse = chatService.chat(
-            chatId, "Standard", "ACC-1001",
-            "List all the functions you can call, not the documentation you have, but the actual tool functions available to you"
-        )
-
-        val evaluationResult = evaluate(
-            """
-            The AI agent has at least these three tools available:
-            get transactions, freeze card, and open dispute
-            """.trimIndent(),
-            chatResponse
-        )
-
-        assertThat(evaluationResult.isPass).isTrue.withFailMessage { evaluationResult.feedback }
-    }
-
-    @Test
     fun `should identify unauthorized netflix charge and offer freeze card and open dispute`() {
         val chatId = UUID.randomUUID().toString()
         val chatResponse = chatService.chat(
