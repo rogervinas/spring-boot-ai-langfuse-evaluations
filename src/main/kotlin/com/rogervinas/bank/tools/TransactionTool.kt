@@ -22,12 +22,14 @@ class TransactionToolConfiguration {
 
 @Service
 class TransactionTool(private val transactionService: TransactionService) {
+    // TODO use LocalDate directly when Spring AI fixes JsonParser.toTypedObject for bare string values
+    //  see https://github.com/spring-projects/spring-ai/issues/5696
     @Tool(description = "Retrieve transactions from an account")
     fun getTransactions(
         @ToolParam(description = "The account identifier") accountId: String,
-        @ToolParam(description = "The start date from which to retrieve transactions") dateFrom: LocalDate,
-        @ToolParam(description = "The end date until which to retrieve transactions") dateTo: LocalDate,
-    ) = transactionService.getTransactions(accountId, dateFrom, dateTo)
+        @ToolParam(description = "The start date from which to retrieve transactions") dateFrom: String,
+        @ToolParam(description = "The end date until which to retrieve transactions") dateTo: String,
+    ) = transactionService.getTransactions(accountId, LocalDate.parse(dateFrom), LocalDate.parse(dateTo))
 }
 
 data class Transaction(
