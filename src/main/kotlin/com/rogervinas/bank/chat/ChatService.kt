@@ -1,6 +1,5 @@
 package com.rogervinas.bank.chat
 
-import org.slf4j.LoggerFactory
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor
@@ -20,7 +19,6 @@ class ChatService(
     private val chatClient: ChatClient
 ) {
 
-    private val logger = LoggerFactory.getLogger(ChatService::class.java)
     private val questionAnswerAdvisor = QuestionAnswerAdvisor.builder(vectorStore).build()
     private val simpleLoggerAdvisor = SimpleLoggerAdvisor()
     private val chatMemory = ConcurrentHashMap<String, PromptChatMemoryAdvisor>()
