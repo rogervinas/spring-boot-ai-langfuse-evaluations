@@ -40,9 +40,12 @@ class ChatControllerTest {
         val userTier = "Standard"
         val accountId = "ACC-1001"
         val chatQuestion = "What can you help me with?"
-        val chatAnswer = "I can help you with transactions, cards, and disputes"
+        val chatResponse = ChatResponse(
+            answer = "I can help you with transactions, cards, and disputes",
+            suggestedActions = listOf(SuggestedAction.GET_TRANSACTIONS, SuggestedAction.FREEZE_CARD)
+        )
 
-        doReturn(chatAnswer)
+        doReturn(chatResponse)
             .whenever(chatService)
             .chat(userId, userTier, accountId, chatQuestion)
 
@@ -52,9 +55,9 @@ class ChatControllerTest {
             .bodyValue("userTier=$userTier&accountId=$accountId&question=$chatQuestion")
             .exchange()
             .expectStatus().isOk
-            .expectBody<String>()
+            .expectBody<ChatResponse>()
             .consumeWith { response ->
-                assertThat(response.responseBody).isEqualTo(chatAnswer)
+                assertThat(response.responseBody).isEqualTo(chatResponse)
             }
     }
 }

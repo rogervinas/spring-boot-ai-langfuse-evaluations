@@ -28,7 +28,7 @@ class ChatService(
         userTier: String,
         accountId: String,
         question: String
-    ): String {
+    ): ChatResponse {
         val chatMemoryAdvisor = chatMemory.computeIfAbsent(chatId) {
             PromptChatMemoryAdvisor.builder(
                 MessageWindowChatMemory.builder()
@@ -48,6 +48,6 @@ class ChatService(
             .user(question)
             .advisors(questionAnswerAdvisor, chatMemoryAdvisor, simpleLoggerAdvisor)
             .call()
-            .content()!!
+            .entity(ChatResponse::class.java)!!
     }
 }

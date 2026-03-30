@@ -1,6 +1,8 @@
 package com.rogervinas.bank
 
+import com.rogervinas.bank.chat.ChatResponse
 import com.rogervinas.bank.chat.ChatService
+import com.rogervinas.bank.chat.SuggestedAction
 import com.rogervinas.bank.evaluator.TestEvaluator
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -42,14 +44,13 @@ class ApplicationTests {
             "I don't have Netflix but I see a charge on my account"
         )
 
-        val evaluationResult = evaluate(
-            """
-            The AI agent found a Netflix charge of 9.99
-            and offered the user to freeze the card and to open a dispute
-            """.trimIndent(),
+        assertThat(chatResponse.suggestedActions)
+            .contains(SuggestedAction.FREEZE_CARD, SuggestedAction.OPEN_DISPUTE)
+
+        val evaluationResult = evaluateAnswer(
+            "The AI agent found a Netflix charge of 9.99",
             chatResponse
         )
-
         assertThat(evaluationResult.isPass).isTrue.withFailMessage { evaluationResult.feedback }
     }
 
@@ -61,19 +62,18 @@ class ApplicationTests {
             "I see a Best Buy charge on my account but I never bought anything there"
         )
 
-        val evaluationResult = evaluate(
-            """
-            The AI agent found a Best Buy charge of 200.00
-            and offered the user to freeze the card
-            but did NOT offer to open a dispute because the transaction is older than 14 days
-            """.trimIndent(),
+        assertThat(chatResponse.suggestedActions)
+            .contains(SuggestedAction.FREEZE_CARD)
+            .doesNotContain(SuggestedAction.OPEN_DISPUTE)
+
+        val evaluationResult = evaluateAnswer(
+            "The AI agent found a Best Buy charge of 200.00 and explained that the dispute window has expired because the transaction is older than 14 days",
             chatResponse
         )
-
         assertThat(evaluationResult.isPass).isTrue.withFailMessage { evaluationResult.feedback }
     }
 
-    private fun evaluate(claim: String, response: String): EvaluationResponse {
+    private fun evaluateAnswer(claim: String, chatResponse: ChatResponse): EvaluationResponse {
         return TestEvaluator(chatClientBuilder) { evaluationRequest, userSpec ->
             userSpec.text(
                 """
@@ -86,6 +86,6 @@ class ApplicationTests {
             )
                 .param("answer", evaluationRequest.responseContent)
                 .param("claim", evaluationRequest.userText)
-        }.evaluate(EvaluationRequest(claim, response))
+        }.evaluate(EvaluationRequest(claim, chatResponse.answer))
     }
 }

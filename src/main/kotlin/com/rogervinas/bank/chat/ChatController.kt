@@ -19,11 +19,11 @@ class ChatController(
         @RequestParam userTier: String,
         @RequestParam accountId: String,
         @RequestParam question: String
-    ): String? {
+    ): ChatResponse? {
         val observation = Observation.createNotStarted("chat", observationRegistry)
             .highCardinalityKeyValue("langfuse.user.id", userId)
 
-        return observation.observe<String> {
+        return observation.observe<ChatResponse> {
             chatService.chat(userId, userTier, accountId, question)
         }
     }
