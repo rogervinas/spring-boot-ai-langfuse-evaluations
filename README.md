@@ -187,6 +187,8 @@ We use structured output (`ChatResponse` with `answer` + `suggestedActions` enum
 - **Langfuse evaluators can target specific fields**: e.g. score `suggestedActions` correctness separately from `answer` quality
 - **Datasets and experiments**: when creating Langfuse datasets, structured expected output (e.g. `expectedActions: [FREEZE_CARD, OPEN_DISPUTE]`) makes it trivial to compare against actual output
 - **Frontend can render structured data**: action buttons, transaction tables, etc. instead of parsing markdown
+- **Caveat — "deterministic" is relative**: while the output *format* is deterministic (enum values, not free text), the LLM's *choice* of which actions to suggest is still non-deterministic. For example, asked about an unauthorized charge, the LLM might return `[FREEZE_CARD, GET_TRANSACTIONS]` instead of `[FREEZE_CARD, OPEN_DISPUTE]` because it wants to retrieve transactions first. So we assert deterministically only on the safety-critical action (`FREEZE_CARD`) and use LLM-as-judge for the rest of the reasoning.
+- **Unit tests vs full-flow evaluation**: deterministic assertions on a single response are inherently flaky because the LLM may spread actions across multiple turns. The real question is not "did this one response contain the right actions?" but "did the whole conversation lead to the right outcome?". This is where Langfuse evaluations (datasets + experiments) are more appropriate — they can evaluate the full trace including all tool calls and actions taken, rather than a snapshot of one turn.
 
 We use Spring AI's `.entity(ChatResponse::class.java)` which leverages `BeanOutputConverter` to instruct the LLM to respond in the expected JSON schema and automatically deserialize it.
 

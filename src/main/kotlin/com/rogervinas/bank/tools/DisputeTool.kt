@@ -40,20 +40,23 @@ data class Dispute(
     val id: String,
     val accountId: String,
     val transactionId: String,
+    val amount: Double,
     val reason: String,
     val status: String,
 )
 
 @Service
-class DisputeService {
+class DisputeService(private val transactionDatabase: TransactionDatabase) {
     private val logger = LoggerFactory.getLogger(DisputeService::class.java)
     private val disputes = mutableMapOf<String, Dispute>()
     private var nextId = 1
 
     fun openDispute(accountId: String, transactionId: String, reason: String): Dispute {
         val disputeId = "DSP-$accountId-${nextId++}"
-        logger.info("Opening dispute $disputeId for transaction $transactionId on account $accountId: $reason")
-        val dispute = Dispute(disputeId, accountId, transactionId, reason, "OPEN")
+        val amount = transactionDatabase.findByAccountId(accountId)
+            .find { it.id == transactionId }?.amount ?: 0.0
+        logger.info("Opening dispute $disputeId for transaction $transactionId (amount=$amount) on account $accountId: $reason")
+        val dispute = Dispute(disputeId, accountId, transactionId, amount, reason, "OPEN")
         disputes[disputeId] = dispute
         return dispute
     }
@@ -85,12 +88,9 @@ class DisputeService {
 
     private fun markAsPending(dispute: Dispute): Dispute = dispute.copy(status = "PENDING")
 
-    // POC: resolve disputes deterministically based on their sequential id (even=accepted, odd=rejected)
+    // POC: reject disputes for amounts greater than 10
     private fun resolve(dispute: Dispute): Dispute {
-        val sequentialNumber = dispute.id.substringAfterLast("-").toIntOrNull() ?: 0
-        val status = if (isEven(sequentialNumber)) "ACCEPTED" else "REJECTED"
+        val status = if (kotlin.math.abs(dispute.amount) > 10) "REJECTED" else "ACCEPTED"
         return dispute.copy(status = status)
     }
-
-    private fun isEven(number: Int): Boolean = number % 2 == 0
 }

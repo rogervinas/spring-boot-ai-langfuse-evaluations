@@ -45,10 +45,10 @@ class ApplicationTests {
         )
 
         assertThat(chatResponse.suggestedActions)
-            .contains(SuggestedAction.FREEZE_CARD, SuggestedAction.OPEN_DISPUTE)
+            .contains(SuggestedAction.FREEZE_CARD)
 
         val evaluationResult = evaluateAnswer(
-            "The AI agent found a Netflix charge of 9.99",
+            "The AI agent found a Netflix charge of 9.99 and offered the user to open a dispute",
             chatResponse
         )
         assertThat(evaluationResult.isPass).isTrue.withFailMessage { evaluationResult.feedback }

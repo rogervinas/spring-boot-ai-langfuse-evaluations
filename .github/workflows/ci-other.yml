@@ -10,6 +10,7 @@ on:
       - docker-compose-langfuse.yml
       - docker-compose-ollama.yml
       - README.md
+      - src/main/resources/static/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
