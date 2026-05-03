@@ -5,10 +5,10 @@ import org.gradle.kotlin.dsl.implementation
 import java.util.Properties
 
 plugins {
-    val kotlinVersion = "2.3.20"
+    val kotlinVersion = "2.3.21"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    id("org.springframework.boot") version "4.0.5"
+    id("org.springframework.boot") version "4.0.6"
     id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -26,8 +26,8 @@ repositories {
     maven { url = uri("https://repo.spring.io/milestone") }
 }
 
-val springAiVersion = "2.0.0-M4"
-val otelInstrumentationVersion = "2.26.1"
+val springAiVersion = "2.0.0-M5"
+val otelInstrumentationVersion = "2.27.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -59,7 +59,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
 
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
