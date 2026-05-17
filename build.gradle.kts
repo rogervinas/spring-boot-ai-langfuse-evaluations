@@ -26,7 +26,7 @@ repositories {
     maven { url = uri("https://repo.spring.io/milestone") }
 }
 
-val springAiVersion = "2.0.0-M5"
+val springAiVersion = "2.0.0-M6"
 val otelInstrumentationVersion = "2.27.0"
 
 dependencies {
