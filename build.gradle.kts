@@ -5,10 +5,10 @@ import org.gradle.kotlin.dsl.implementation
 import java.util.Properties
 
 plugins {
-    val kotlinVersion = "2.3.21"
+    val kotlinVersion = "2.4.0"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    id("org.springframework.boot") version "4.0.6"
+    id("org.springframework.boot") version "4.1.0"
     id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -26,8 +26,8 @@ repositories {
     maven { url = uri("https://repo.spring.io/milestone") }
 }
 
-val springAiVersion = "2.0.0-M5"
-val otelInstrumentationVersion = "2.27.0"
+val springAiVersion = "2.0.0"
+val otelInstrumentationVersion = "2.28.1"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -67,7 +67,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-webflux-test")
 
-    testImplementation(platform("org.junit:junit-bom:6.0.3"))
+    testImplementation(platform("org.junit:junit-bom:6.1.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
